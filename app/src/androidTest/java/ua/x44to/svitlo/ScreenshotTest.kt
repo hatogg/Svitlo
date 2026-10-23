@@ -66,15 +66,10 @@ class ScreenshotTest {
         Store.init(ctx)
         Repo.file(ctx, "kyiv").writeText(fixture())
         Repo.regions["kyiv"] = RegionData.parse(Repo.file(ctx, "kyiv").readText())
-        for (p in Store.places.toList()) Store.delete(p.id)
-        val evening = "0".repeat(36) + "1".repeat(6) + "0".repeat(6) // 18:00–21:00
-        Store.save(Place("work", t("Робота", "Work"), manual = List(7) { evening }))
-        Store.save(Place("home", t("Дім", "Home"), "kyiv", "GPV3.1"))
-
         for (lang in listOf("uk", "en")) {
             Store.chooseLang(lang)
             Store.chooseTheme(1)
-            Store.select("home")
+            places()
             ActivityScenario.launch(MainActivity::class.java).use {
                 settle()
                 assertTrue("немає стану «світла немає»", has(t("Світла немає", "Power is off")))
@@ -123,6 +118,14 @@ class ScreenshotTest {
         shell("cmd statusbar collapse")
         Store.chooseLang(null)
         Store.chooseTheme(0)
+    }
+
+    /** Дві адреси з назвами мовою знімка: дім (графік Києва) і робота (свій графік, без світла 18:00–21:00). */
+    private fun places() {
+        for (p in Store.places.toList()) Store.delete(p.id)
+        val evening = "0".repeat(36) + "1".repeat(6) + "0".repeat(6)
+        Store.save(Place("work", t("Робота", "Work"), manual = List(7) { evening }))
+        Store.save(Place("home", t("Дім", "Home"), "kyiv", "GPV3.1"))
     }
 
     private fun has(text: String) = compose.onAllNodesWithText(text, useUnmergedTree = true).fetchSemanticsNodes().isNotEmpty()
