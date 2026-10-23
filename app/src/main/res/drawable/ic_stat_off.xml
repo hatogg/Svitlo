@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Перекреслена лампочка: світла не буде -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M9,21h6v-1H9v1zM12,2c-1.6,0 -3.07,0.54 -4.25,1.44l9.81,9.81C18.46,12.07 19,10.6 19,9c0,-3.87 -3.13,-7 -7,-7zM3.41,2.86L2,4.27l3.05,3.05C5.02,7.54 5,7.77 5,8v1c0,2.38 1.19,4.47 3,5.74V17c0,0.55 0.45,1 1,1h6c0.27,0 0.52,-0.11 0.7,-0.29l3.03,3.03 1.41,-1.41L3.41,2.86z" />
+</vector>
