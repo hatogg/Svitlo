@@ -116,7 +116,7 @@ class ScreenshotTest {
         shell("cmd statusbar expand-notifications")
         Thread.sleep(2500)
         // лише верх шторки з нашим сповіщенням, без чужих системних
-        shot("uk-notification", cropTop = 0.47f)
+        shot("uk-notification", cropTop = 0.335f)
         shell("cmd statusbar collapse")
         Store.chooseLang(null)
         Store.chooseTheme(0)
