@@ -106,6 +106,7 @@ class ScreenshotTest {
 
         // нагадування: як воно виглядає на телефоні
         Store.chooseLang("uk")
+        places()
         val now = ZonedDateTime.now(KYIV).withSecond(0).withNano(0)
         val home = Store.places.first { it.id == "home" }
         Notify.event(ctx, home, Event("home", EventType.OFF, now.plusMinutes(15), now.plusMinutes(195)), 15)
@@ -114,7 +115,8 @@ class ScreenshotTest {
         assertTrue("нагадування не з'явилося", active.isNotEmpty())
         shell("cmd statusbar expand-notifications")
         Thread.sleep(2500)
-        shot("uk-notification")
+        // лише верх шторки з нашим сповіщенням, без чужих системних
+        shot("uk-notification", cropTop = 0.47f)
         shell("cmd statusbar collapse")
         Store.chooseLang(null)
         Store.chooseTheme(0)
@@ -152,8 +154,9 @@ class ScreenshotTest {
         compose.waitForIdle()
     }
 
-    private fun shot(name: String) {
-        val bmp: Bitmap = inst.uiAutomation.takeScreenshot() ?: error("no screenshot for $name")
+    private fun shot(name: String, cropTop: Float = 1f) {
+        val full: Bitmap = inst.uiAutomation.takeScreenshot() ?: error("no screenshot for $name")
+        val bmp = if (cropTop < 1f) Bitmap.createBitmap(full, 0, 0, full.width, (full.height * cropTop).toInt()) else full
         val dir = File(ctx.filesDir, "screens").apply { mkdirs() }
         FileOutputStream(File(dir, "$name.png")).use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
     }

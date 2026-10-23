@@ -185,7 +185,21 @@ private fun ManualWeek(rows: MutableList<String>) {
     val names = if (L.ukr) listOf("Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд") else listOf("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.fillMaxWidth()) {
         names.forEachIndexed { i, n ->
-            FilterChip(selected = i == day, onClick = { day = i }, label = { Text(n) }, modifier = Modifier.weight(1f))
+            val on = i == day
+            Surface(
+                onClick = { day = i },
+                shape = RoundedCornerShape(12.dp),
+                color = if (on) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainerHigh,
+                modifier = Modifier.weight(1f).height(40.dp),
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Text(
+                        n, style = MaterialTheme.typography.labelLarge, maxLines = 1,
+                        fontWeight = if (on) FontWeight.SemiBold else FontWeight.Normal,
+                        color = if (on) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
         }
     }
     Spacer(Modifier.height(10.dp))
